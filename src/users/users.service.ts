@@ -1,19 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt'
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const user =  new User
+    const hashedpass = await bcrypt.hash(createUserDto.password,12)
+    user.password = hashedpass
+    user.username = createUserDto.username
+    user.role = createUserDto.role
+    return await user.save();
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await User.find()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await User.findOneBy({'id':id});
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
