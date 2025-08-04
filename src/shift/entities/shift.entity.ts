@@ -8,10 +8,10 @@ export class Shift extends BaseEntity {
     id:number
 
     @Column()
-    start_time:Date
+    start_time:string
 
     @Column()
-    end_time:Date
+    end_time:string
 
     @ManyToOne(() => User)
     @JoinColumn({name:"userId"})
